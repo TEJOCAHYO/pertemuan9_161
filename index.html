@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portofolio | Tejo Cahyo Kuncoro</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-dark: #050505;
+            --accent: #d4af37;
+            --text-white: #ffffff;
+            --glass-bg: rgba(255, 255, 255, 0.05);
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-white);
+            scroll-behavior: smooth;
+        }
+
+        .navbar { background-color: rgba(0,0,0,0.9) !important; backdrop-filter: blur(10px); }
+        
+        /* ===== HERO CAROUSEL ===== */
+        .carousel-item {
+            position: relative;
+            height: 520px;
+            overflow: hidden;
+        }
+
+        .carousel-item .slide-bg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(45%) saturate(1.1);
+            transition: transform 8s ease;
+        }
+
+        .carousel-item.active .slide-bg {
+            transform: scale(1.04);
+        }
+
+        .carousel-caption {
+            bottom: 50%;
+            transform: translateY(50%);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+        }
+
+        .carousel-caption .badge-slide {
+            display: inline-block;
+            background: var(--accent);
+            color: #000;
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            padding: 5px 14px;
+            border-radius: 20px;
+            margin-bottom: 14px;
+            text-transform: uppercase;
+        }
+
+        .carousel-caption h1 {
+            font-size: clamp(2.5rem, 7vw, 4.5rem);
+            font-weight: 800;
+            letter-spacing: 8px;
+            line-height: 1.1;
+        }
+
+        .carousel-caption p {
+            font-size: 1rem;
+            color: rgba(255,255,255,0.8);
+            margin-top: 10px;
+        }
+
+        /* ===== SLIDE OVERLAY GRADIENT ===== */
+        .slide-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(5,5,5,0.7) 0%, transparent 60%);
+        }
+
+        /* ===== JUMBOTRON ===== */
+        .jumbotron-custom {
+            padding: 80px 0;
+            background: var(--glass-bg);
+            border-radius: 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* ===== CARDS ===== */
+        .custom-card {
+            background: var(--glass-bg);
+            border: 1px solid rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            transition: 0.3s;
+        }
+        .custom-card:hover { border-color: var(--accent); transform: translateY(-5px); }
+
+        /* ===== PROFILE PHOTO SECTION ===== */
+        .profile-photo-wrapper {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin: 0 auto 24px;
+            cursor: pointer;
+        }
+
+        .profile-photo-wrapper img {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent);
+            display: block;
+        }
+
+        .photo-overlay {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.55);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.25s;
+            pointer-events: none;
+        }
+
+        .profile-photo-wrapper:hover .photo-overlay {
+            opacity: 1;
+        }
+
+        .photo-overlay span {
+            font-size: 0.7rem;
+            color: var(--accent);
+            letter-spacing: 1px;
+            margin-top: 6px;
+            font-weight: 700;
+        }
+
+        .photo-overlay svg {
+            width: 30px;
+            height: 30px;
+            fill: var(--accent);
+        }
+
+        #photoInput { display: none; }
+
+        /* ===== SKILLS BADGES ===== */
+        .skill-badge {
+            display: inline-block;
+            background: rgba(212,175,55,0.12);
+            border: 1px solid rgba(212,175,55,0.4);
+            color: var(--accent);
+            border-radius: 30px;
+            padding: 5px 14px;
+            font-size: 0.82rem;
+            margin: 4px;
+        }
+
+        /* ===== MOUNTAIN STATS STRIP ===== */
+        .stat-strip {
+            display: flex;
+            gap: 0;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.08);
+            margin-top: 18px;
+        }
+        .stat-item {
+            flex: 1;
+            padding: 14px 10px;
+            text-align: center;
+            background: rgba(255,255,255,0.04);
+            border-right: 1px solid rgba(255,255,255,0.07);
+        }
+        .stat-item:last-child { border-right: none; }
+        .stat-value {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        .stat-label {
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.5);
+            margin-top: 2px;
+        }
+
+        footer { background-color: #0a0a0a; padding: 50px 0 20px; border-top: 1px solid #222; }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">TEJO<span style="color: var(--accent)">CAHYO</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link active" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#data-diri">Profile</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                            Social Media
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                            <li><a class="dropdown-item" href="https://instagram.com" target="_blank">Instagram</a></li>
+                            <li><a class="dropdown-item" href="https://github.com" target="_blank">GitHub</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="mailto:tejo.cahyo.ft24@mail.umy.ac.id">Email Me</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <form class="d-flex" onsubmit="alert('Mencari...'); return false;">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== HERO CAROUSEL — Gunung Lawu & Basket ===== -->
+    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" id="home">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="0" class="active"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="2"></button>
+        </div>
+        <div class="carousel-inner">
+
+            <!-- SLIDE 1 — Puncak Gunung Lawu -->
+            <div class="carousel-item active">
+                <img
+                    src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1400&q=80"
+                    class="d-block w-100 slide-bg"
+                    alt="Puncak Gunung Lawu"
+                >
+                <div class="slide-overlay"></div>
+                <div class="carousel-caption text-start ps-4 ps-md-5">
+                    <span class="badge-slide">⛰️ Gunung Lawu</span>
+                    <h1>PUNCAK<br>HARGO DUMILAH</h1>
+                    <p>3.265 mdpl · Jawa Tengah – Jawa Timur</p>
+                </div>
+            </div>
+
+            <!-- SLIDE 2 — Suasana pendakian / kabut gunung -->
+            <div class="carousel-item">
+                <img
+                    src="https://images.unsplash.com/photo-1551632811-561732d1e306?auto=format&fit=crop&w=1400&q=80"
+                    class="d-block w-100 slide-bg"
+                    alt="Pendakian Gunung Lawu"
+                >
+                <div class="slide-overlay"></div>
+                <div class="carousel-caption text-start ps-4 ps-md-5">
+                    <span class="badge-slide">⛰️ Pendakian</span>
+                    <h1>JALUR<br>CEMOROSEWU</h1>
+                    <p>Jalur pendakian populer Gunung Lawu dari sisi Magetan</p>
+                </div>
+            </div>
+
+            <!-- SLIDE 3 — Basket -->
+            <div class="carousel-item">
+                <img
+                    src="https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=1400&q=80"
+                    class="d-block w-100 slide-bg"
+                    alt="Basket"
+                >
+                <div class="slide-overlay"></div>
+                <div class="carousel-caption text-start ps-4 ps-md-5">
+                    <span class="badge-slide">🏀 Basket</span>
+                    <h1>SHOOT<br>YOUR SHOT</h1>
+                    <p>Olahraga favorit di luar coding & eksplorasi alam</p>
+                </div>
+            </div>
+
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+
+    <!-- JUMBOTRON -->
+    <div class="container my-5 text-center">
+        <div class="jumbotron-custom shadow-lg px-4">
+            <h1 class="display-4 fw-bold">Selamat Datang di Web Kami!</h1>
+            <p class="lead text-secondary my-4">Praktikum Modul 9 Framework Bootstrap · Tejo Cahyo Kuncoro</p>
+            <div class="d-flex justify-content-center gap-3 flex-wrap">
+                <a href="#data-diri" class="btn btn-primary btn-lg px-5 rounded-pill">Lihat Profil</a>
+                <button class="btn btn-outline-light btn-lg px-5 rounded-pill" onclick="window.print()">Cetak Halaman</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== PROFILE SECTION ===== -->
+    <section class="container my-5 pt-4" id="data-diri">
+        <div class="row g-4">
+
+            <!-- KOLOM KIRI — Foto + Info Akademik -->
+            <div class="col-lg-5">
+                <div class="custom-card p-5 h-100 shadow text-center">
+
+                    <!-- Foto Profil yang Bisa Diganti -->
+                    <div class="profile-photo-wrapper" onclick="document.getElementById('photoInput').click()" title="Klik untuk ganti foto">
+                        <img id="profilePhoto"
+                            src="https://ui-avatars.com/api/?name=Tejo+Cahyo&background=d4af37&color=000&size=360&bold=true&font-size=0.35"
+                            alt="Foto Profil Tejo Cahyo">
+                        <div class="photo-overlay">
+                            <!-- kamera icon SVG -->
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                                <circle cx="12" cy="13" r="4" fill="none" stroke="#d4af37" stroke-width="2"/>
+                            </svg>
+                            <span>GANTI FOTO</span>
+                        </div>
+                    </div>
+                    <input type="file" id="photoInput" accept="image/*" onchange="gantiPhoto(event)">
+
+                    <h4 class="fw-bold mb-1">Tejo Cahyo Kuncoro</h4>
+                    <p style="color: var(--accent); font-size: 0.85rem; letter-spacing: 1px;" class="mb-4">Informatics Student · UMY</p>
+
+                    <hr style="border-color: rgba(255,255,255,0.1);">
+
+                    <h6 style="color: var(--accent);" class="mb-3 mt-3 text-start">Informasi Akademik</h6>
+                    <table class="table table-dark table-borderless table-sm text-start">
+                        <tr><td class="text-secondary" style="width:38%">NIM</td><td>20240140161</td></tr>
+                        <tr><td class="text-secondary">Kelas</td><td>Teknologi Informasi D</td></tr>
+                        <tr><td class="text-secondary">Lahir</td><td>Brebes, 14 Feb 2006</td></tr>
+                        <tr><td class="text-secondary">Kampus</td><td>UMY Yogyakarta</td></tr>
+                    </table>
+                </div>
+            </div>
+
+            <!-- KOLOM KANAN — Hobi + Gunung Lawu + Basket -->
+            <div class="col-lg-7 d-flex flex-column gap-4">
+
+                <!-- Kartu Hobi & Skill -->
+                <div class="custom-card p-4 shadow">
+                    <h5 style="color: var(--accent)" class="mb-3">Hobi & Skill</h5>
+                    <div class="mb-3">
+                        <span class="skill-badge">🏀 Basket</span>
+                        <span class="skill-badge">⛰️ Naik Gunung</span>
+                        <span class="skill-badge">🎸 Metal</span>
+                        <span class="skill-badge">💻 Coding</span>
+                        <span class="skill-badge">🔐 Ethical Hacking</span>
+                    </div>
+                    <label class="small text-secondary mb-2">Favorite Track (Joji — Glimpse of Us):</label>
+                    <audio controls class="w-100">
+                        <source src="Joji -  Glimpse of Us.mp3" type="audio/mpeg">
+                        Browser kamu tidak mendukung audio.
+                    </audio>
+                </div>
+
+                <!-- Kartu Gunung Lawu -->
+                <div class="custom-card p-4 shadow">
+                    <h5 style="color: var(--accent)" class="mb-1">⛰️ Gunung Lawu</h5>
+                    <p class="text-secondary small mb-2">Gunung favorit untuk didaki — di perbatasan Jawa Tengah & Jawa Timur</p>
+                    <img
+                        src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80"
+                        alt="Pemandangan Gunung Lawu"
+                        class="w-100 rounded-3 mb-3"
+                        style="height: 180px; object-fit: cover; filter: brightness(80%);"
+                    >
+                    <div class="stat-strip">
+                        <div class="stat-item">
+                            <div class="stat-value">3.265</div>
+                            <div class="stat-label">mdpl</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">3</div>
+                            <div class="stat-label">Jalur Resmi</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">Hargo<br>Dumilah</div>
+                            <div class="stat-label">Puncak Tertinggi</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kartu Basket -->
+                <div class="custom-card p-4 shadow">
+                    <h5 style="color: var(--accent)" class="mb-1">🏀 Basket</h5>
+                    <p class="text-secondary small mb-2">Olahraga favorit — menjaga fisik sekaligus membangun kerja tim</p>
+                    <img
+                        src="https://images.unsplash.com/photo-1546519638-68e109498ffc?auto=format&fit=crop&w=800&q=80"
+                        alt="Basket"
+                        class="w-100 rounded-3"
+                        style="height: 160px; object-fit: cover; filter: brightness(75%);"
+                    >
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="container">
+            <div class="row text-center text-md-start">
+                <div class="col-md-6 mb-4">
+                    <h4 class="fw-bold mb-3">Kontak Kami</h4>
+                    <p class="text-secondary small mb-1">Email Resmi:</p>
+                    <a href="mailto:tejo.cahyo.ft24@mail.umy.ac.id" class="text-decoration-none text-white fw-bold">tejo.cahyo.ft24@mail.umy.ac.id</a>
+                </div>
+                <div class="col-md-6 mb-4 text-md-end">
+                    <h4 class="fw-bold mb-3">Alamat</h4>
+                    <p class="text-secondary small">
+                        Jl. Anggrek, Geblagan, Tamantirto, Kec. Kasihan,<br>
+                        Kabupaten Bantul, DIY 55183
+                    </p>
+                </div>
+            </div>
+            <div class="text-center pt-4 border-top border-secondary">
+                <p class="small text-secondary">&copy; 2024 · Tejo Cahyo Kuncoro | Teknologi Informasi UMY</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function gantiPhoto(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('profilePhoto').src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+    </script>
+</body>
+</html>
